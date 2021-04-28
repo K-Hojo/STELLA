@@ -1,5 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
+import './search.js'
 
 function App() {
   return (
@@ -18,6 +19,15 @@ function App() {
           Learn React
         </a>
       </header>
+      <nav>
+        <div className="nav-container"></div>
+      </nav>
+      <main>
+        <div className="main-container">
+          <search />
+        </div>
+      </main>
+      <footer></footer>
     </div>
   );
 }
