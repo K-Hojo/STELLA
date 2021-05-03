@@ -23,5 +23,7 @@ index_view = TemplateView.as_view(template_name="index.html")
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('accounts.urls')),
-    path('accounts/', include('allauth.urls')),
+    path('api/accounts/', include('allauth.urls')),
+    path('api/collection/', include('collection.urls')),
+    path('api/query/', include('query.urls')),
 ]
