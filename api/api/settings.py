@@ -41,12 +41,15 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'collection',
 
+    'rest_framework',
+    'rest_framework.authtoken',
+    'rest_auth',
+    'rest_auth.registration',
     'django.contrib.sites',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
-    'rest_framework',
     'corsheaders',
 ]
 
@@ -62,9 +65,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ORIGIN_WHITELIST = (
-    "http://localhost:3000",
-)
 ROOT_URLCONF = 'api.urls'
 
 TEMPLATES = [
@@ -119,38 +119,51 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-AUTH_USER_MODEL = 'accounts.CustomUser'
 
 # django-allauthで利用するdjango.contrib.sitesを使うためにサイト識別用IDを設定
-SITE_ID = 1
+SITE_ID = 2
 
 AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',  # 一般ユーザー用(メールアドレス認証)
     'django.contrib.auth.backends.ModelBackend',  # 管理サイト用(ユーザー名認証)
 )
 
-# メールアドレス認証に変更する設定
+# allauthの設定
+AUTH_USER_MODEL = 'accounts.CustomUser'
+ACCOUNT_ADAPTER = 'accounts.adapter.MyAccountAdapter'
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_USERNAME_REQUIRED = False
-
-# サインアップにメールアドレス確認を挟むよう設定
-ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_EMAIL_REQUIRED = True
-
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_UNIQUE_EMAIL = True
 # ログイン/ログアウト後の遷移先を設定
 LOGIN_REDIRECT_URL = 'accounts:index' # ここは変更が必要 -> 修正した
 ACCOUNT_LOGOUT_REDIRECT_URL = 'account_login'
-
-# ログアウトリンクのクリック一発でログアウトする設定
+#
 ACCOUNT_LOGOUT_ON_GET = True
-
-# django-allauthが送信するメールの件名に自動付与される接頭辞をブランクにする設定
+ACCOUNT_LOGOUT_ON_PASSWORD_CHANGE = False
+ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
+PASSWORD_RESET_TIMEOUT_DAYS = 1
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 3
+# デフォルトのメール送信元を設定
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_FILE_PATH = 'tmp/emails'
+DEFAULT_FROM_EMAIL = 'admin@example.com'
 ACCOUNT_EMAIL_SUBJECT_PREFIX = ''
 
-# デフォルトのメール送信元を設定
-DEFAULT_FROM_EMAIL = 'admin@example.com'
-
+#-------------------------
+# [SMTP] Email Settings 本番用
+#-------------------------
+#
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' # default
+# DEFAULT_FROM_EMAIL = 'admin@example.com'
+# EMAIL_HOST = 'smtp.example.com'
+# EMAIL_HOST_USER = 'admin@example.com'
+# EMAIL_HOST_PASSWORD = 'your_password'
+# EMAIL_PORT = 465   # smtps
+# EMAIL_USE_SSL = True
 # SOCIALACCOUNT
+
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'SCOPE': [
@@ -162,6 +175,48 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 }
+
+#REST_AUTH_SERIALIZERSの設定
+REST_AUTH_SERIALIZERS = {
+    'USER_DETAILS_SERIALIZER': 'accounts.serializers.UserSerializer'
+}
+REST_SESSION_LOGIN = False
+OLD_PASSWORD_FIELD_ENABLED = False
+LOGOUT_ON_PASSWORD_CHANGE = False
+
+#REST_FRAMEWORKの設定
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+        #'rest_framework.permissions.AllowAny',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+    'DEFAULT_THROTTLE_CLASSES': (
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle'
+    ),
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '100/day',
+        'user': '1000/day'
+    },
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 100,
+    'DEFAULT_PARSER_CLASSES': (
+        'rest_framework.parsers.JSONParser',
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser'
+     ),
+}
+
+#CORSの設定
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_WHITELIST = (
+    "http://localhost:3000",
+)
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
@@ -223,4 +278,3 @@ LOGGING = {
     }
 }
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

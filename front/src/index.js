@@ -1,17 +1,26 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import "bootstrap/dist/css/bootstrap.css";
+import 'redux-notifications/lib/styles.css';
+import "./styles/style.css"
+import React from "react";
+import ReactDOM from "react-dom";
+import { Router } from "react-router-dom";
+import { Provider } from "react-redux";
+
+import store from "./store";
+import history from "./utils/historyUtils";
+import { authLogin } from "./actions/authActions";
+import App from "./components/App";
+
+const token = localStorage.getItem("token");
+
+if (token) {
+    store.dispatch(authLogin(token));
+}
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+    <Provider store={store}>
+        <Router history={history}>
+            <App />
+        </Router>
+    </Provider>
+    , document.getElementById("root"));
