@@ -22,13 +22,13 @@ class UserProfile extends Component {
             return (
                 <div className="mx-2">
                     <h4>username: {user.username}</h4>
-                    <h4>First Name: {user.first_name}</h4>
-                    <h4>Last Name: {user.last_name}</h4>
+                    {/* <h4>First Name: {user.first_name}</h4> */}
+                    {/* <h4>Last Name: {user.last_name}</h4> */}
                     <h4>email: {user.email}</h4>
-                    <h4>Website: {user.website}</h4>
-                    <hr />
-                    <h4>About Myself:</h4>
-                    <p>{user.about}</p>
+                    {/* <h4>Website: {user.website}</h4> */}
+                    {/* <hr /> */}
+                    {/* <h4>About Myself:</h4> */}
+                    {/* <p>{user.about}</p> */}
 
                 </div>
             );

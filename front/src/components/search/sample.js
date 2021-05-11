@@ -1,9 +1,18 @@
 import React from "react";
+import { Field, reduxForm } from "redux-form";
 
-class ClassComponent extends React.Component {
-  render() {
-    return <h1>React Component Export Default した</h1>;
-  }
+const SampleForm = (props) => {
+  const {handleSubmit} = props;
+  return (
+    <form onSubmit={handleSubmit}>
+      <div>
+        <Field name="name" component="input" type="text" />
+      </div>
+        <button type="submit">送信</button>
+    </form>
+  )
 }
 
-export default ClassComponent;
+export default reduxForm({
+  form: 'sample-form',
+})(SampleForm);

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { SubmissionError } from 'redux-form';
+import { formValueSelector, SubmissionError } from 'redux-form';
 import history from "../utils/historyUtils";
 import { actions as notifActions } from 'redux-notifications';
 
@@ -158,6 +158,8 @@ export function confirmPasswordChange(formValues, dispatch, props) {
 }
 
 export function activateUserAccount(formValues, dispatch, props) {
+    // console.log(props)
+    // console.log(formValues)
     const { key } = props.match.params;
     const activateUserUrl = AuthUrls.USER_ACTIVATION;
     const data = Object.assign(formValues, { key });

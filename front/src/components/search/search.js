@@ -1,7 +1,7 @@
 import React from 'react';
 import Material from './material';
 import Add from './add';
-
+import SampleForm from './sample'
 
 class Search extends React.Component{
   constructor(props){
@@ -53,6 +53,7 @@ class Search extends React.Component{
     const ndc = ['総記','哲学','歴史','社会科学','自然科学','技術','産業','芸術','言語','文学',];
     return(
       <div>
+        <SampleForm onSubmit={value => console.log(value)}/>
         <form onSubmit={e=>this.handleSubmit(e)}>
           <p>
             <input

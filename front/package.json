@@ -64,6 +64,7 @@
     "redux-form": "^7.4.3",
     "redux-form-validators": "^2.7.5",
     "redux-notifications": "^4.0.1",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "reselect": "^4.0.0"
   }
 }
