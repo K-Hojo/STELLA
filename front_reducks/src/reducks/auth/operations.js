@@ -10,7 +10,7 @@ export const signup = (formValues) => {
     const signupUrl = AuthUrls.SIGNUP;
 
     await axios.post(signupUrl, formValues)
-        .then((response) => {
+        .then(response => {
               // If request is good...
               // you can login if email verification is turned off.
               // const token = response.data.key;
@@ -28,6 +28,21 @@ export const signup = (formValues) => {
               throw new SubmissionError(processedError);
           });
           }
+}
+
+export const activateAccount = (formValues) => {
+  return async (dispatch) => {
+    console.log(formValues)
+    window.alert('submitted'+ formValues)
+    // const { key } = props.match.params;
+    // const activateUserUrl = AuthUrls.USER_ACTIVATION;
+    // const data = Object.assign(formValues, { key });
+
+    // return axios.post(activateUserUrl, data)
+    //   .then(response => {
+    //     dispatch(push("/login"))
+    // })
+  }
 }
 
 export const login = (formValues) => {

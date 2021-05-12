@@ -1,11 +1,19 @@
 import React from "react";
 import { reduxForm } from "redux-form";
+import {useDispatch} from 'react-redux';
 
+import {activateAccount} from '../reducks/auth/operations'
 import {PrimaryButton} from '../components/UIkit';
 
 let AccountActivation = () => {
+    const dispatch = useDispatch();
+
     return (
-        <form onSubmit={value => console.log(value)} >
+        <form onSubmit={values => {
+            dispatch(activateAccount(values))
+            // values.preventDefault()
+          }
+        } >
             <PrimaryButton label="確認" type="submit" />
         </form>
     )

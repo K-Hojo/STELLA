@@ -7,6 +7,7 @@ import {connectRouter, routerMiddleware} from 'connected-react-router';
 import { AuthReducer } from '../auth/reducers';
 import {reducer as formReducer} from 'redux-form';
 import thunk from 'redux-thunk';
+import { SearchReducer } from '../search/reducers';
 
 
 
@@ -16,6 +17,7 @@ export default function createStore(history) {
       router: connectRouter(history),
       form: formReducer,
       auth: AuthReducer,
+      search: SearchReducer
     }),
     applyMiddleware(
       routerMiddleware(history),

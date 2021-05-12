@@ -11,8 +11,7 @@ const SignUp = () => {
     <div>
       <h2>アカウント登録</h2>
       <SignupForm onSubmit={values => {
-        console.log(values)
-        dispatch(signup)(values)
+        dispatch(signup(values))
       }} />
     </div>
   )
