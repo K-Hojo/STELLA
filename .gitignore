@@ -1,8 +1,12 @@
 /front_old
+front_reducks
+api_postgre
 .django
 .vscode
 .dev
 .sample
 .sample2
 .stella
+.stella_postgre
 tmp
+stella
