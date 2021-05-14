@@ -91,6 +91,8 @@ WSGI_APPLICATION = 'api.wsgi.application'
 
 DATABASES = {
     'default': {
+        # 'ENGINE': 'djongo',
+        # 'NAME': 'stella',
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'stella',
         'USER': os.environ.get('DB_USER'),
@@ -120,7 +122,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# django-allauthで利用するdjango.contrib.sitesを使うためにサイト識別用IDを設定
+# django-allauthで利用するdjango.contrib.sitesを使うためにサイト識別用IDを設定。ここで指定したドメインから認証メールが送信される
 SITE_ID = 2
 
 AUTHENTICATION_BACKENDS = (
@@ -216,6 +218,7 @@ REST_FRAMEWORK = {
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ORIGIN_WHITELIST = (
     "http://localhost:3000",
+    "http://localhost:3010",
 )
 
 # Internationalization
