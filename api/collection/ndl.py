@@ -10,8 +10,8 @@ def searchMaterial(req):
     print(title)
   if 'ndc' in req.GET:
     ndc = req.GET['ndc']
-  base = "https://iss.ndl.go.jp/api/sru?operation=searchRetrieve&maximumRecords=10&recordSchema=dcndl_simple&query=mediatype=1"
-  url = base + " AND title=" + title + " AND ndc=" + ndc
+  base = "https://iss.ndl.go.jp/api/sru?operation=searchRetrieve&maximumRecords=10&recordSchema=dcndl_simple&query=mediatype=1 AND "
+  url = base + "title=" + title + " AND ndc=" + ndc
   print(url)
   r = requests.get((url))
   tree = lxml.etree.XML(r.content)
