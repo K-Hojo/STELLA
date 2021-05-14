@@ -91,14 +91,14 @@ WSGI_APPLICATION = 'api.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'djongo',
-        'NAME': 'stella',
-        # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        # 'ENGINE': 'djongo',
         # 'NAME': 'stella',
-        # 'USER': os.environ.get('DB_USER'),
-        # 'PASSWORD': os.environ.get('DB_PASSWORD'),
-        # 'HOST': '',
-        # 'PORT': '',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'stella',
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASSWORD'),
+        'HOST': '',
+        'PORT': '',
     }
 }
 
@@ -123,7 +123,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 # django-allauthで利用するdjango.contrib.sitesを使うためにサイト識別用IDを設定。ここで指定したドメインから認証メールが送信される
-SITE_ID = 3
+SITE_ID = 2
 
 AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',  # 一般ユーザー用(メールアドレス認証)

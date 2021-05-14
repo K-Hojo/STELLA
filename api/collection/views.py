@@ -1,11 +1,13 @@
-from django.shortcuts import render
-from django.http import JsonResponse
+from rest_framework import viewsets,permissions
 
+from .models import Collection
+from .serializers import CollectionSerializer
 
+# 資料検索を返す
 from .ndl import searchMaterial
 
 
-def hello(request):
-  response = JsonResponse({'response_text':'しぶりんめっかわ'})
-  # response['Access-Control-Allow-Origin'] = 'localhost:3000/'
-  return response
+class CollectionViewSet(viewsets.ModelViewSet):
+  queryset = Collection.objects.all()
+  serializer_class = CollectionSerializer
+  permission_classes = [permissions.IsAuthenticated]
