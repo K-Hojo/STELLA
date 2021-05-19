@@ -4,6 +4,7 @@ from . import views
 
 router = DefaultRouter()
 router.register(r'collection',views.CollectionViewSet)
+router.register(r'book',views.BookViewSet)
 
 app_name = 'collection'
 urlpatterns = [
