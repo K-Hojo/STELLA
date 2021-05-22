@@ -51,7 +51,7 @@ class CurrentUser(APIView):
    def get(self, request, *args, **kwargs):
         if request.user.id == None:
             raise Http404
-        serializer = UserProfileSerializer(request.user)
+        serializer = UserSerializer(request.user)
         data = serializer.data
         data['is_admin'] = request.user.is_superuser
         return Response(data)
