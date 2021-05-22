@@ -94,7 +94,7 @@ DATABASES = {
         # 'ENGINE': 'djongo',
         # 'NAME': 'stella',
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'stella_altered_collection_table',
+        'NAME': 'stella',
         'USER': os.environ.get('DB_USER'),
         'PASSWORD': os.environ.get('DB_PASSWORD'),
         'HOST': '',
