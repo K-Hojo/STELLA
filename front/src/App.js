@@ -1,17 +1,25 @@
-import React from 'react';
+import React, {useReducer, useEffect} from 'react';
 import Router from './Router';
-import { MyNavbar } from './components'
+
+import AuthContext from './operations/auth/context'
+import { initialState, authReducer } from './operations/auth/reducers';
+import { loginAction } from './operations/auth/actions';
 
 const App = () => {
+  const [auth, dispatch] = useReducer(authReducer,initialState);
+  
+  useEffect(() => {
+    const token = sessionStorage.getItem('token')
+    if(token){
+      dispatch(loginAction(token))
+    }
+  },[])
+
   return (
     <div>
-      <header>
-        <MyNavbar />
-      </header>
-      <main>
+      <AuthContext.Provider value={{auth, dispatch}}>
         <Router />
-        {/* <h1>Home</h1> */}
-      </main>
+      </AuthContext.Provider>
     </div>
   )
 }
