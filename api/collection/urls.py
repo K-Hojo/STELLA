@@ -3,8 +3,7 @@ from rest_framework.routers import DefaultRouter
 from . import views
 
 router = DefaultRouter()
-router.register(r'collection',views.CollectionViewSet)
-router.register(r'book',views.BookViewSet)
+router.register(r'collection',views.CollectionViewSet, basename='collection')
 detail_list = views.CollectionDetailViewSet.as_view({'get':'list', 'post':'create'})
 detail_item = views.CollectionDetailViewSet.as_view({'get':'retrieve', 'delete': 'destroy'})
 

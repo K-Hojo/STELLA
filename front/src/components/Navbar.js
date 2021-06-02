@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { useHistory } from 'react-router';
-import { withRouter } from 'react-router-dom'
 import axios from 'axios';
 import AuthContext from '../operations/auth/context';
+import { Link as RouterLink } from 'react-router-dom'
 import Link from '@material-ui/core/Link'
 import { AuthUrls } from '../operations/auth/urls'
 import { logoutAction } from '../operations/auth/actions';
@@ -69,14 +69,11 @@ const MyNavbar = () => {
       <AppBar position="static">
         <Toolbar>
           <div style={{width: '100%'}}>
-          <Box display="flex" flexDirection="row" alignItems="center" justify="flex-start" flexWrap="nowrap">
+          <Box display="flex" flexDirection="row" alignItems="center" justifyContent="flex-start" flexWrap="nowrap">
             <Box >
               <Grid container direction="row" alignItems="center" justify="flex-start">
-                <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-                  <MenuIcon />
-                </IconButton>
                 <Typography variant="h4" className={classes.title}>
-                  <Link href="/" color="inherit">stella</Link>
+                  <Link component={RouterLink} to="/" color="inherit">stella</Link>
                 </Typography>
               </Grid>
             </Box>
@@ -84,10 +81,10 @@ const MyNavbar = () => {
             <Box flexGrow={1}>
               <Grid container direction="row" alignItems="center" justify="flex-start">
                 <Typography variant="h5" className={classes.item}>
-                  <Link href="/search" color="inherit">search</Link>
+                  <Link component={RouterLink} to={{pathname:"/search"}} color="inherit">search</Link>
                 </Typography>
                 <Typography variant="h5" className={classes.item}>
-                  <Link href="/collection" color="inherit">collection</Link>
+                  <Link component={RouterLink} to={{pathname:"/collection"}} color="inherit">collection</Link>
                 </Typography>
               </Grid>
             </Box>
