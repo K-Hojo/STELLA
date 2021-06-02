@@ -7,7 +7,7 @@ import { loginAction } from './operations/auth/actions';
 
 const App = () => {
   const [auth, dispatch] = useReducer(authReducer,initialState);
-  
+
   useEffect(() => {
     const token = sessionStorage.getItem('token')
     if(token){

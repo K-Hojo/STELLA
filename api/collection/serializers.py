@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.validators import UniqueTogetherValidator
 from .models import Collection, Book, CollectionDetail
 from accounts.serializers import UserSerializer
 
@@ -6,7 +7,7 @@ from accounts.serializers import UserSerializer
 class BookSerializer(serializers.ModelSerializer):
   class Meta:
     model = Book
-    fields = ('id','title', 'creator', 'publisher', 'issued')
+    fields = ('title', 'creator', 'publisher', 'issued')
 
 
 class CollectionDetailSerializer(serializers.ModelSerializer):
@@ -16,6 +17,7 @@ class CollectionDetailSerializer(serializers.ModelSerializer):
     fields = ('id','collection','book',)
     read_only_fields = ['collection',]
     ordering = ['id']
+
 
   def create(self, validated_data):
     bookdata = validated_data.pop('book')

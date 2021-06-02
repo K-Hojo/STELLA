@@ -1,2 +1,5 @@
 export {default as MyNavbar} from './Navbar'
-export {default as SignupForm} from './SignupForm'
+export {default as SearchForm} from './SearchForm'
+export {default as BookCard} from './BookCard'
+export {default as CollectionCard} from './CollectionCard'
+export {default as DelteDialog} from './DeleteDialog'

@@ -1,4 +1,4 @@
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions, status
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 
@@ -32,19 +32,24 @@ class MultipleFieldLookupMixin:
 
 
 class CollectionViewSet(viewsets.ModelViewSet):
-  queryset = Collection.objects.all()
   serializer_class = CollectionSerializer
   permission_classes = [permissions.IsAuthenticated]
 
   def perform_create(self, serializer):
     serializer.save(user=self.request.user)
 
+  def get_queryset(self):
+      user = self.request.user
+      return Collection.objects.filter(user=user)
 
 class CollectionDetailViewSet(viewsets.ModelViewSet, MultipleFieldLookupMixin):
-  queryset = CollectionDetail.objects.all()
   serializer_class = CollectionDetailSerializer
   lookup_fields = ['collection','pk']
   permission_classes = [permissions.IsAuthenticated]
+
+  def get_queryset(self):
+      user = self.request.user
+      return CollectionDetail.objects.filter(collection__user=user)
 
   def list(self,request,*args,**kwargs):
     queryset = self.get_list(request,*args,**kwargs)
@@ -62,9 +67,20 @@ class CollectionDetailViewSet(viewsets.ModelViewSet, MultipleFieldLookupMixin):
     serializer = self.get_serializer(instance)
     return Response(serializer.data)
 
-  def perform_create(self, serializer):
-    id=self.kwargs['collection']
+  def create(self, request, *args, **kwargs):
+    serializer = self.get_serializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    id=request.data.pop('id')
     collection = Collection.objects.get(id=id)
+    if collection.user == request.user:
+      self.perform_create(serializer, collection)
+      headers = self.get_success_headers(serializer.data)
+      return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+    else:
+      return Response({"detail":"ログインしているユーザーとコレクションの所有者が異なります。正しいアカウントでログインして再度お試しください。"},status=status.HTTP_403_FORBIDDEN)
+
+
+  def perform_create(self, serializer,collection):
     serializer.save(collection=collection)
 
 
