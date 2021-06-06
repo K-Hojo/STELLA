@@ -1,6 +1,6 @@
 /front_old
-/front_reducks
-/front_sample
+front_reducks
+front_sample
 .stella_postgre
 .stella_mongo
 api_postgre
@@ -15,4 +15,4 @@ stella
 requirements.txt
 database.xlsx
 bg_concept.xcf
-
+HatchfulExport-All
