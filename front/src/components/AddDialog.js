@@ -2,7 +2,7 @@ import React, {useContext, useState} from 'react';
 import axios from 'axios';
 import { CollectionUrls } from '../operations/collection/urls';
 import AuthContext from '../operations/auth/context';
-import { useLocation } from 'react-router-dom';
+import { useLocation,useHistory } from 'react-router-dom';
 import { addColAction, addDetAction } from '../operations/collection/actions';
 import { Dialog, DialogTitle, DialogContentText, DialogActions, Button, DialogContent, Box, Typography, TextField} from '@material-ui/core';
 import CollectionSelect from './CollectionSelect';
@@ -13,6 +13,7 @@ const AddDialog = (props) => {
   const {open, onClose, results, book, collection, dispatch} = props;
   const {auth} = useContext(AuthContext);
   const token = auth.token;
+  const history = useHistory();
   const location = useLocation();
   const pathname = location.pathname;
   const [col, setCol] = useState(''); //searchから追加するときにコレクションを指定するための変数
@@ -23,17 +24,17 @@ const AddDialog = (props) => {
   let data = {}
   let list = []
 
-  if (pathname === "/collection" && collection) {
+  if (collection) { //呼び出し元がCollectionCard
     url = url + collection.id + "/books/"
     action = addDetAction
     data = {id: collection.id, book: books}
     list = collection.books
-  } else if (pathname === "/search" && col !== 'new') {
+  } else if (pathname === "/search" && col !== 'new') { //呼び出し元がBookCardで新規作成でない
     action = addDetAction
     url = url + col.id + "/books/"
     data = {id: col.id, book: book}
     list = col.books
-  } else if (pathname === "/search" && col === 'new') {
+  } else if (pathname === "/search" && col === 'new') { //呼び出し元がBookCardで新規作成
     action = addColAction
     data = {name: collectionName, books: Array(1).fill({'book': book})}
     list = results
@@ -55,10 +56,11 @@ const AddDialog = (props) => {
   }
 
   const handleAdd = async () => {
-    console.log(data)
+    if(!token){
+      history.push("/login")
+    }
     const response = await axios.post(url, data, {headers: {Authorization: 'Token ' + token}})
-    list.push(response.data) //searchからの追加はOK
-    console.log(list)
+    list.push(response.data)
     dispatch(action(list))
     clearBooks()
     setCol('')
@@ -73,7 +75,7 @@ const AddDialog = (props) => {
       <DialogTitle>アイテムを追加しますか？</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          {pathname === "/collection" &&
+          {collection &&
             <>
               <Typography>追加先コレクション：</Typography>
               <Typography variant="h6">{collection.name}</Typography>
@@ -81,12 +83,12 @@ const AddDialog = (props) => {
           }
         </DialogContentText>
         <Box>
-          {pathname === "/search" &&
+          {book &&
             <CollectionSelect onChange={(e) => handleChangeCollection(e)} results={results} col={col}/>
           }
         </Box>
         <Box>
-          {pathname === "/collection" &&
+          {collection &&
             <BookForm onChange={handleChangeBooks} books={books} />
           }
         </Box>

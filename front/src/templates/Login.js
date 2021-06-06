@@ -4,7 +4,7 @@ import { useHistory } from 'react-router';
 import { AuthUrls } from '../operations/auth/urls';
 import { loginAction } from '../operations/auth/actions'
 import AuthContext from '../operations/auth/context';
-import { Button, TextField, Grid, Box } from '@material-ui/core'
+import { Button, TextField, Grid, Box, Typography } from '@material-ui/core'
 
 
 const Login = () => {
@@ -12,6 +12,7 @@ const Login = () => {
   const history = useHistory();
   const [email, setEmail] = useState('')
   const [password, setPass] = useState('')
+  const [error, setError] = useState(null)
 
   const handleLogin = async (e) => {
     e.preventDefault()
@@ -26,6 +27,10 @@ const Login = () => {
         dispatch(loginAction(token));
         sessionStorage.setItem('token', token);
         history.push("/");
+      })
+      .catch(error => {
+        console.log(error)
+        setError(error)
       })
     }
 
@@ -50,6 +55,9 @@ const Login = () => {
         </form>
       </div>
       </Box>
+      </Box>
+      <Box display="flex" justifyContent="center">
+        {error && <Typography color="secondary">メールアドレスまたはパスワードが違います。</Typography>}
       </Box>
     </div>
   )

@@ -1,7 +1,6 @@
 import React, {useContext} from 'react';
 import axios from 'axios';
 import AuthContext from '../operations/auth/context';
-import { useLocation } from 'react-router-dom';
 import { Dialog, DialogTitle, Button, DialogActions, DialogContentText, Typography } from '@material-ui/core'
 import { CollectionUrls } from '../operations/collection/urls'
 import { deleteColAction, deleteDetAction } from '../operations/collection/actions'
@@ -13,17 +12,15 @@ const DeleteDialog = (props) => {
   const {open, onClose, targetid, targetname, n, list, dispatch} = props
   const {auth} = useContext(AuthContext)
   const token = auth.token
-  const location = useLocation();
-  const pathname = location.pathname
 
   let targetType = ''
   let url = CollectionUrls.COLLECTION
   let action = () => {}
-  if (pathname === "/collection") {
+  if (!targetid.item) { //呼び出し元がCollectionCard
     targetType = 'コレクション'
     url = url + targetid
     action = deleteColAction
-  } else if (pathname === "/collection/" + targetid.col) {
+  } else { // 呼び出し元がBookCard
     targetType = 'アイテム'
     url = url + targetid.col + "/books/" + targetid.item
     action = deleteDetAction

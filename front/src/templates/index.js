@@ -5,4 +5,4 @@ export {default as Login}  from './Login'
 export {default as Search}  from './Search'
 export {default as Collection}  from './Collection'
 export {default as CollectionDetail}  from './CollectionDetail'
-
+export {default as About} from './About'
