@@ -9,7 +9,6 @@ let SearchForm = (props) => {
   return(
     <div>
         <form onSubmit={handleSubmit}>
-          {/* <p> */}
             <Field name="title" component={renderTextInput} type="text" placeholder="キーワード" />
             の
             <Field name="ndc" component="select" >
@@ -20,7 +19,6 @@ let SearchForm = (props) => {
             </Field>
             的側面
             <br />
-          {/* </p> */}
           <PrimaryButton type="submit" label="検索" />
         </form>
     </div>

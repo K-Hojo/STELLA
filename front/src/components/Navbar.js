@@ -2,19 +2,12 @@ import React, { useContext } from 'react';
 import { useHistory } from 'react-router';
 import axios from 'axios';
 import AuthContext from '../operations/auth/context';
-import { Link as RouterLink } from 'react-router-dom'
-import Link from '@material-ui/core/Link'
 import { AuthUrls } from '../operations/auth/urls'
 import { logoutAction } from '../operations/auth/actions';
+import { Link as RouterLink } from 'react-router-dom'
+import { Link, AppBar, Toolbar, Typography, Box, Grid, Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import Box from '@material-ui/core/Box'
-import { Grid } from '@material-ui/core';
-import Button from '@material-ui/core/Button'
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -53,12 +46,8 @@ const MyNavbar = () => {
   } else {
     return (
       <div>
-        {/* <div style={{padding:10}}> */}
           <Link href="/login" color="inherit" className={classes.item}>ログイン</Link>
-        {/* </div> */}
-        {/* <div style={{padding:10}}> */}
           <Link href="/signup" color="inherit" className={classes.item}>新規登録</Link>
-        {/* </div> */}
       </div>
     )
   }}
@@ -89,13 +78,14 @@ const MyNavbar = () => {
               </Grid>
             </Box>
             <Box >
-              {/* <div style={{padding:10}}> */}
               <Box display="flex" flexDirection="row" alignItems="center" justify="flex-start" flexWrap="nowrap">
-                {/* <Typography variant="button" className={classes.item}> */}
-                  {renderAuthItem()}
-                {/* </Typography> */}
+                <Box p={2}>
+                  <Typography variant="h6">
+                    <Link component={RouterLink} to={{pathname: "/about"}} color="inherit">about</Link>
+                  </Typography>
+                </Box>
+                {renderAuthItem()}
               </Box>
-              {/* </div> */}
             </Box>
           </Box>
           </div>

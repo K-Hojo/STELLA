@@ -19,6 +19,7 @@ const CollectionDetail = () => {
   const location = useLocation();
   const [detail, dispatch] = useReducer(detailReducer, location.state.collection)
   const books = detail.books
+  console.log(books)
 
   return(
     <div>
@@ -28,7 +29,7 @@ const CollectionDetail = () => {
         {books.map((item,i,books) => {
           const book = item.book
             return (
-              <Grid item xs={6} className={classes.card} key={book.id}>
+              <Grid item xs={6} className={classes.card} key={item.id}>
                 <BookCard
                   book={book}
                   n={i}

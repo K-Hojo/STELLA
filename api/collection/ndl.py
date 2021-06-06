@@ -5,13 +5,17 @@ from django.http import JsonResponse
 def searchMaterial(req):
   title = ''
   ndc = ''
+  page = '1'
   if 'title' in req.GET:
     title = req.GET['title']
     print(title)
   if 'ndc' in req.GET:
     ndc = req.GET['ndc']
-  base = "https://iss.ndl.go.jp/api/sru?operation=searchRetrieve&maximumRecords=10&recordSchema=dcndl_simple&query=mediatype=1"
-  url = base + " AND title=" + title + " AND ndc=" + ndc
+  if 'page' in req.GET:
+    page = req.GET['page']
+  start = str((int(page) - 1) * 10 + 1)
+  base = "https://iss.ndl.go.jp/api/sru?operation=searchRetrieve&recordSchema=dcndl_simple&maximumRecords=10"
+  url = base + "&startRecord=" + start + "&query=mediatype=1 AND title=" + title + " AND ndc=" + ndc
   print(url)
   r = requests.get((url))
   tree = lxml.etree.XML(r.content)

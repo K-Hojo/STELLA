@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormControl, InputLabel, Select, MenuItem } from '@material-ui/core'
+import { FormControl, InputLabel, Select, MenuItem, Divider } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
@@ -23,6 +23,7 @@ const CollectionSelect = (props) => {
         )
       })
       }
+      <Divider/>
       <MenuItem key="new" value="new">新規作成</MenuItem>
     </Select>
     </FormControl>
