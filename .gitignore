@@ -16,3 +16,6 @@ requirements.txt
 database.xlsx
 bg_concept.xcf
 HatchfulExport-All
+ec2key.ppk
+.env
+logs

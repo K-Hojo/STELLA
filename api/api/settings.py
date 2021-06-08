@@ -1,3 +1,4 @@
+
 """
 Django settings for api project.
 
@@ -9,24 +10,25 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
+
+import environ
 import os
 from pathlib import Path
 
+env = environ.Env(DEBUG=(bool,False))
+
+environ.Env.read_env()
+
+DEBUG = env('DEBUG')
+
+SECRET_KEY = env('SECRET_KEY')
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+ALLOWED_HOSTS = env('ALLOWED_HOSTS')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '56wwl)%6tnk8*ixj)6r1emk+cs#h8rz$gd2#%-n@vrq$tlwkpf'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = ['*']
-
 
 # Application definition
 
@@ -51,6 +53,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'corsheaders',
+    'django_ses',
 ]
 
 MIDDLEWARE = [
@@ -90,16 +93,7 @@ WSGI_APPLICATION = 'api.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        # 'ENGINE': 'djongo',
-        # 'NAME': 'stella',
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'stella',
-        'USER': os.environ.get('DB_USER'),
-        'PASSWORD': os.environ.get('DB_PASSWORD'),
-        'HOST': '',
-        'PORT': '',
-    }
+    'default': env.db(),
 }
 
 
@@ -148,23 +142,12 @@ ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
 PASSWORD_RESET_TIMEOUT_DAYS = 1
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 3
 # デフォルトのメール送信元を設定
-EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-EMAIL_FILE_PATH = 'tmp/emails'
-DEFAULT_FROM_EMAIL = 'admin@example.com'
-ACCOUNT_EMAIL_SUBJECT_PREFIX = ''
+EMAIL_BACKEND = env('EMAIL_BACKEND')
+EMAIL_FILE_PATH = env('EMAIL_FILE_PATH')
+DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL')
+ACCOUNT_EMAIL_SUBJECT_PREFIX = env('ACCOUNT_EMAIL_SUBJECT_PREFIX')
 
-#-------------------------
-# [SMTP] Email Settings 本番用
-#-------------------------
-#
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' # default
-# DEFAULT_FROM_EMAIL = 'admin@example.com'
-# EMAIL_HOST = 'smtp.example.com'
-# EMAIL_HOST_USER = 'admin@example.com'
-# EMAIL_HOST_PASSWORD = 'your_password'
-# EMAIL_PORT = 465   # smtps
-# EMAIL_USE_SSL = True
-# SOCIALACCOUNT
+
 
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
@@ -240,37 +223,38 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# ロギング設定
+
+# LOGGING = env.dict('LOGGING')
+
 LOGGING = {
-    'version': 1,  # 1固定
+    'version': 1,
     'disable_existing_loggers': False,
 
-    # ロガーの設定
     'loggers': {
-        # Djangoが利用するロガー
         'django': {
-            'handlers': ['console'],
+            'handlers': ['file'],
             'level': 'INFO',
         },
-        # diaryアプリケーションが利用するロガー
-        'diary': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
+        'collection': {
+            'handlers': ['file'],
+            'level': 'INFO',
         },
     },
 
-    # ハンドラの設定
     'handlers': {
-        'console': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-            'formatter': 'dev'
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/django.log'),
+            'formatter': 'prod',
+            'when': 'D',
+            'interval': 1,
+            'backupCount': 7,
         },
     },
 
-    # フォーマッタの設定
     'formatters': {
-        'dev': {
+        'prod': {
             'format': '\t'.join([
                 '%(asctime)s',
                 '[%(levelname)s]',
@@ -280,4 +264,3 @@ LOGGING = {
         },
     }
 }
-
